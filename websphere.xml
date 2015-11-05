@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="websphere" default="all">
+  
+  
+  <property file="websphere.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="1000m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.tox/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="compiler.excluded">
+    <exclude name="${basedir}/src/com/jeefw/model/sys/param/DictParameter.java"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxrt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  
+  
+  <!-- Application Server Libraries -->
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module Ibm -->
+  
+  <dirname property="module.ibm.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.ibm" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.ibm" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.ibm" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.ibm" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="ibm.output.dir" value="${module.ibm.basedir}/web/WEB-INF/classes/production/Ibm"/>
+  <property name="ibm.testoutput.dir" value="${module.ibm.basedir}/web/WEB-INF/classes/test/Ibm"/>
+  
+  <path id="ibm.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="ibm.module.production.classpath">
+    <path refid="${module.jdk.classpath.ibm}"/>
+  </path>
+  
+  <path id="ibm.runtime.production.module.classpath">
+    <pathelement location="${ibm.output.dir}"/>
+  </path>
+  
+  <path id="ibm.module.classpath">
+    <path refid="${module.jdk.classpath.ibm}"/>
+    <pathelement location="${ibm.output.dir}"/>
+  </path>
+  
+  <path id="ibm.runtime.module.classpath">
+    <pathelement location="${ibm.testoutput.dir}"/>
+    <pathelement location="${ibm.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.ibm">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.ibm">
+    <patternset refid="compiler.excluded"/>
+    <patternset refid="excluded.from.module.ibm"/>
+  </patternset>
+  
+  <path id="ibm.module.sourcepath">
+    <dirset dir="${module.ibm.basedir}/Ibm">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.ibm" depends="compile.module.ibm.production,compile.module.ibm.tests" description="Compile module Ibm"/>
+  
+  <target name="compile.module.ibm.production" depends="register.custom.compilers" description="Compile module Ibm; production classes">
+    <mkdir dir="${ibm.output.dir}"/>
+    <javac2 destdir="${ibm.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ibm}/javac">
+      <compilerarg line="${compiler.args.ibm}"/>
+      <bootclasspath refid="ibm.module.bootclasspath"/>
+      <classpath refid="ibm.module.production.classpath"/>
+      <src refid="ibm.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ibm"/>
+    </javac2>
+    
+    <copy todir="${ibm.output.dir}">
+      <fileset dir="${module.ibm.basedir}/Ibm/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+        <patternset refid="excluded.from.compilation.ibm"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.ibm.tests" depends="register.custom.compilers,compile.module.ibm.production" description="compile module Ibm; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.ibm" description="cleanup module">
+    <delete dir="${ibm.output.dir}"/>
+    <delete dir="${ibm.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module WebSphere -->
+  
+  <dirname property="module.websphere.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.websphere" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.websphere" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.websphere" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.websphere" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="websphere.output.dir" value="${module.websphere.basedir}/web/WEB-INF/classes"/>
+  <property name="websphere.testoutput.dir" value="${module.websphere.basedir}/web/WEB-INF/classes"/>
+  
+  <path id="websphere.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="websphere.module.production.classpath">
+    <path refid="${module.jdk.classpath.websphere}"/>
+    <fileset dir="${basedir}/web/WEB-INF/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="websphere.runtime.production.module.classpath">
+    <pathelement location="${websphere.output.dir}"/>
+    <fileset dir="${basedir}/web/WEB-INF/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="websphere.module.classpath">
+    <path refid="${module.jdk.classpath.websphere}"/>
+    <pathelement location="${websphere.output.dir}"/>
+    <fileset dir="${basedir}/web/WEB-INF/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <path id="websphere.runtime.module.classpath">
+    <pathelement location="${websphere.output.dir}"/>
+    <fileset dir="${basedir}/web/WEB-INF/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.websphere">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.websphere">
+    <patternset refid="compiler.excluded"/>
+    <patternset refid="excluded.from.module.websphere"/>
+  </patternset>
+  
+  <path id="websphere.module.sourcepath">
+    <dirset dir="${module.websphere.basedir}">
+      <include name="src"/>
+      <include name="resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.websphere" depends="compile.module.websphere.production,compile.module.websphere.tests" description="Compile module WebSphere"/>
+  
+  <target name="compile.module.websphere.production" depends="register.custom.compilers" description="Compile module WebSphere; production classes">
+    <mkdir dir="${websphere.output.dir}"/>
+    <javac2 destdir="${websphere.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.websphere}/javac">
+      <compilerarg line="${compiler.args.websphere}"/>
+      <bootclasspath refid="websphere.module.bootclasspath"/>
+      <classpath refid="websphere.module.production.classpath"/>
+      <src refid="websphere.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.websphere"/>
+    </javac2>
+    
+    <copy todir="${websphere.output.dir}">
+      <fileset dir="${module.websphere.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+        <patternset refid="excluded.from.compilation.websphere"/>
+      </fileset>
+      <fileset dir="${module.websphere.basedir}/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+        <patternset refid="excluded.from.compilation.websphere"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.websphere.tests" depends="register.custom.compilers,compile.module.websphere.production" description="compile module WebSphere; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.websphere" description="cleanup module">
+    <delete dir="${websphere.output.dir}"/>
+    <delete dir="${websphere.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.ibm, clean.module.websphere" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.ibm, compile.module.websphere" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.websphere:war" value="${basedir}/web/WEB-INF/classes/artifacts/WebSphere_war"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.WebSphere_war.war" value="${artifacts.temp.dir}/WebSphere_war.war"/>
+  </target>
+  
+  <target name="artifact.websphere:war" depends="init.artifacts" description="Build &#39;WebSphere:war&#39; artifact">
+    <property name="artifact.temp.output.websphere:war" value="${artifacts.temp.dir}/WebSphere_war"/>
+    <mkdir dir="${artifact.temp.output.websphere:war}"/>
+    <zip destfile="${temp.jar.path.WebSphere_war.war}"/>
+    <copy file="${temp.jar.path.WebSphere_war.war}" tofile="${artifact.temp.output.websphere:war}/WebSphere_war.war"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.websphere:war" description="Build all artifacts">
+    <mkdir dir="${artifact.output.websphere:war}"/>
+    <copy todir="${artifact.output.websphere:war}">
+      <fileset dir="${artifact.temp.output.websphere:war}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

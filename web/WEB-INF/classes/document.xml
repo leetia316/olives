@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HomePage>
+     <Menu>
+          <MenuName>首页</MenuName>
+          <MenuUrl>index</MenuUrl>
+          <MenuClass>menu-icon fa fa-desktop</MenuClass>
+     </Menu>
+     <Menu>
+          <MenuName>社区</MenuName>
+          <MenuUrl>community</MenuUrl>
+          <MenuClass>menu-icon fa fa-desktop</MenuClass>
+     </Menu>
+     <Menu>
+          <MenuName>帮助</MenuName>
+          <MenuUrl>page/help</MenuUrl>
+          <MenuClass>menu-icon fa fa-desktop</MenuClass>
+          <HomePage>
+               <Menu>
+                    <MenuName>首页帮助</MenuName>
+                    <MenuUrl>page/help/homepage</MenuUrl>
+                    <MenuClass>icon fa fa-exchange</MenuClass>
+               </Menu>
+               <Menu>
+                    <MenuName>社区帮助</MenuName>
+                    <MenuUrl>community</MenuUrl>
+                    <MenuClass>ace-icon fa fa-comments</MenuClass>
+               </Menu>
+               <Menu>
+                    <MenuName>提交帮助</MenuName>
+                    <MenuUrl>page/help/submit</MenuUrl>
+                    <MenuClass>icon fa fa-list</MenuClass>
+               </Menu>
+          </HomePage>
+     </Menu>
+</HomePage>
+
